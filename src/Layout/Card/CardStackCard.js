@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import { deleteCard } from "../../utils/api/index"
 
-export default function CardStackCard({ front, back, id }) {
+export default function CardStackCard({ front, back, id, key }) {
 
   const { url } = useRouteMatch();
   const history = useHistory();
@@ -18,7 +18,7 @@ export default function CardStackCard({ front, back, id }) {
   }
 
   return (
-    <div className="card">
+    <div className="card" key={key}>
       <div className="card-body">
         <div className="d-flex justify-content-around">
         <p className="card-text">{front}</p>

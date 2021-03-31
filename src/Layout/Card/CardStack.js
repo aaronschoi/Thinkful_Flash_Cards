@@ -54,8 +54,8 @@ export default function CardStack() {
         </button>
       </div>
       <h2 className="mt-2">Cards</h2>
-      {deck.cards.map(card => {
-        return <CardStackCard front={card.front} back={card.back} id={card.id} />
+      {deck.cards.map((card, index) => {
+        return <CardStackCard front={card.front} back={card.back} id={card.id} key={index} />
       })}
     </div>
   );

@@ -13,7 +13,7 @@ export default function CreateCard({ makeCard }) {
   };
   const [formValue, setFormValue] = useState({ ...defaultForm });
   const [breadcrumb, setBreadcrumb] = useState("");
-
+  const [ disableSubmit, setDisableSubmit ] = useState(false)
   //turn api call into cards and deckWithoutCards(like everything else)
 
   const changeHandler = (event) => {
@@ -32,7 +32,7 @@ export default function CreateCard({ makeCard }) {
     readCard(cardId, controller.signal)
     .then(response => setFormValue({...response}))}
     return () => controller.abort();
-  },[])
+  },[makeCard])
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -41,8 +41,10 @@ export default function CreateCard({ makeCard }) {
       createCard(deckId, formValue, controller.signal)
       .then(notRelevant => history.push(`/decks/${deckId}`));
     } else {
+      setDisableSubmit(true);
       updateCard(formValue, controller.signal)
-      .then(notRelevant => history.push(`/decks/${deckId}`));
+      .then(notRelevant => window.alert('The card has been updated'))
+    .then(notRelevant => setDisableSubmit(false));
     }
     return () => controller.abort();
   };
@@ -53,7 +55,7 @@ export default function CreateCard({ makeCard }) {
       <form onSubmit={submitHandler}>
         {makeCard ? <h2>Add Card</h2> : <h2>Edit Card</h2>}
         <div className="mb-3">
-          <label for="front" className="form-label">
+          <label htmlFor="front" className="form-label">
             Front
           </label>
           <textarea
@@ -66,7 +68,7 @@ export default function CreateCard({ makeCard }) {
           ></textarea>
         </div>
         <div className="mb-3">
-          <label for="name" className="form-label">
+          <label htmlFor="name" className="form-label">
             Back
           </label>
           <textarea
@@ -84,7 +86,7 @@ export default function CreateCard({ makeCard }) {
               Done
             </button>
           </Link>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" disabled={disableSubmit}>
             Save
           </button>
         </div>
